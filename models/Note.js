@@ -58,7 +58,7 @@ class Note {
   static async getAllNotes(userId, path) {
     try {
       const sql = `SELECT * FROM notes 
-                    WHERE owner = '${userId}' AND path = ${path}
+                    WHERE owner = '${userId}' AND path = '${path}'
                     ORDER BY dateCreated DESC;`;
       const [data, _] = await db.execute(sql);
       return data;

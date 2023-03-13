@@ -60,7 +60,7 @@ class Folder {
   static async getAllFolders(userId, path) {
     try {
       const sql = `SELECT * FROM folders 
-                    WHERE owner = '${userId}' AND path = ${path}
+                    WHERE owner = '${userId}' AND path = '${path}'
                     ORDER BY dateCreated DESC;`;
       const [data, _] = await db.execute(sql);
       return data;
