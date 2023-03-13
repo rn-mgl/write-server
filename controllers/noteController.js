@@ -24,21 +24,52 @@ const createNote = async (req, res) => {
 
 const updateNote = async (req, res) => {
   const { noteKey } = req.params;
-  const { name, content } = req.body;
+  const { type } = req.query;
 
-  const note = await Note.updateNote(name, content, noteKey);
+  if (type === "content") {
+    const { name, content } = req.body;
 
-  if (!note) {
-    throw new BadRequestError(`Error in changing note name.`);
+    const note = await Note.updateNote(name, content, noteKey);
+
+    if (!note) {
+      throw new BadRequestError(`Error in changing note name.`);
+    }
+
+    res.status(StatusCodes.OK).json(note);
+    return;
+  } else if (type === "noteColor") {
+    const { noteColor } = req.body;
+
+    const note = await Note.updateNoteColor(noteKey, noteColor);
+
+    if (!note) {
+      throw new BadRequestError(`Error in changing note color.`);
+    }
+
+    res.status(StatusCodes.OK).json(note);
+
+    return;
+  } else if (type === "textColor") {
+    const { textColor } = req.body;
+
+    const note = await Note.updateTextColor(noteKey, textColor);
+
+    if (!note) {
+      throw new BadRequestError(`Error in changing note color.`);
+    }
+
+    res.status(StatusCodes.OK).json(note);
+
+    return;
+  } else {
+    throw new BadRequestError(`This type of update is not allowed.`);
   }
-
-  res.status(StatusCodes.OK).json(note);
 };
 
 const deleteNote = async (req, res) => {
-  const { noteId } = req.params;
+  const { noteKey } = req.params;
 
-  const note = await Note.deleteNote(noteId);
+  const note = await Note.deleteNote(noteKey);
 
   if (!note) {
     throw new BadRequestError(`Error in deleting note.`);

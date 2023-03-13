@@ -88,6 +88,32 @@ class Note {
       console.log(error + "   get all notes   ");
     }
   }
+
+  static async updateNoteColor(noteKey, noteColor) {
+    try {
+      const sql = `UPDATE notes SET ? 
+                  WHERE noteKey = '${noteKey}'`;
+      const updateValues = { noteColor };
+
+      const [data, _] = await db.query(sql, updateValues);
+      return data;
+    } catch (error) {
+      console.log(error + "   update note color   ");
+    }
+  }
+
+  static async updateTextColor(noteKey, textColor) {
+    try {
+      const sql = `UPDATE notes SET ? 
+                  WHERE noteKey = '${noteKey}'`;
+      const updateValues = { textColor };
+
+      const [data, _] = await db.query(sql, updateValues);
+      return data;
+    } catch (error) {
+      console.log(error + "   update note color   ");
+    }
+  }
 }
 
 module.exports = Note;

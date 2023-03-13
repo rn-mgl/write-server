@@ -32,7 +32,7 @@ class User {
       const sql = `SELECT * FROM users
               WHERE email = '${email}';`;
       const [data, _] = await db.execute(sql);
-      return data;
+      return data[0];
     } catch (error) {
       console.log(error + "   get by email   ");
     }

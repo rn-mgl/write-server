@@ -5,7 +5,7 @@ const router = express.Router();
 router.route("/").post(controller.createFolder).get(controller.getAllFolders);
 router
   .route("/:folderKey")
-  .patch(controller.updateName)
+  .patch(controller.updateFolder)
   .delete(controller.deleteFolder)
   .get(controller.getFolder);
 

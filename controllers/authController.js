@@ -40,7 +40,7 @@ const logIn = async (req, res) => {
     throw new NotFoundError(`There is no user with the email ${candidateEmail}.`);
   }
 
-  const { userId, name, surname, email, password, isVerified } = user[0];
+  const { userId, name, surname, email, password, isVerified } = user;
 
   const isMatched = await verifyPassword(candidatePassword, password);
 

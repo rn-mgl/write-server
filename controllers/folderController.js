@@ -20,23 +20,49 @@ const createFolder = async (req, res) => {
   res.status(StatusCodes.OK).json(newFolder);
 };
 
-const updateName = async (req, res) => {
-  const { folderId } = req.params;
-  const { name } = req.body;
+const updateFolder = async (req, res) => {
+  const { folderKey } = req.params;
+  const { type } = req.query;
 
-  const folder = await Folder.updateName(folderId, name);
+  if (type === "name") {
+    const { name } = req.body;
+    const folder = await Folder.updateName(folderKey, name);
 
-  if (!folder) {
-    throw new BadRequestError(`Error in making changin folder name.`);
+    if (!folder) {
+      throw new BadRequestError(`Error in making changing folder name.`);
+    }
+
+    res.status(StatusCodes.OK).json(folder);
+    return;
+  } else if (type === "folderColor") {
+    const { folderColor } = req.body;
+    const folder = await Folder.updateFolderColor(folderKey, folderColor);
+
+    if (!folder) {
+      throw new BadRequestError(`Error in making changing folder color.`);
+    }
+
+    res.status(StatusCodes.OK).json(folder);
+    return;
+  } else if (type === "textColor") {
+    const { textColor } = req.body;
+    const folder = await Folder.updateTextColor(folderKey, textColor);
+
+    if (!folder) {
+      throw new BadRequestError(`Error in making changing folder text color.`);
+    }
+
+    res.status(StatusCodes.OK).json(folder);
+    return;
+  } else {
+    throw new BadRequestError(`This type of update is not valid.`);
   }
-
-  res.status(StatusCodes.OK).json(folder);
 };
 
 const deleteFolder = async (req, res) => {
-  const { folderId } = req.params;
+  const { folderKey } = req.params;
 
-  const folder = await Folder.deleteFolder(folderId);
+  const folder = await Folder.deleteFolder(folderKey);
 
   if (!folder) {
     throw new BadRequestError(`Error in deleting folder.`);
@@ -71,4 +97,4 @@ const getFolder = async (req, res) => {
   res.status(StatusCodes.OK).json({ folder: folder[0], files });
 };
 
-module.exports = { createFolder, updateName, deleteFolder, getAllFolders, getFolder };
+module.exports = { createFolder, updateFolder, deleteFolder, getAllFolders, getFolder };
