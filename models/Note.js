@@ -55,6 +55,19 @@ class Note {
     }
   }
 
+  static async deleteNoteByPath(path) {
+    try {
+      const sql = `DELETE FROM notes
+                    WHERE path = '${path}';`;
+
+      const [data, _] = await db.execute(sql);
+
+      return data;
+    } catch (error) {
+      console.log(error + "   delete note   ");
+    }
+  }
+
   static async getAllNotes(userId, path) {
     try {
       const sql = `SELECT * FROM notes 
