@@ -54,6 +54,19 @@ const updateFolder = async (req, res) => {
 
     res.status(StatusCodes.OK).json(folder);
     return;
+  } else if (type === "path") {
+    const { path, folderKey } = req.body;
+    const { id } = req.user;
+
+    const data = await Folder.moveFolder(id, folderKey, path);
+
+    if (!data) {
+      throw new BadRequestError(`Error in moving folder.`);
+    }
+
+    res.status(StatusCodes.OK).json(data);
+
+    return;
   } else {
     throw new BadRequestError(`This type of update is not valid.`);
   }
@@ -73,9 +86,8 @@ const deleteFolder = async (req, res) => {
 
 const getAllFolders = async (req, res) => {
   const { id } = req.user;
-  const { path } = req.body;
 
-  const folder = await Folder.getAllFolders(id, path);
+  const folder = await Folder.getAllFolders(id);
 
   if (!folder) {
     throw new NotFoundError(`Error in making getting folders.`);

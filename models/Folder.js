@@ -57,15 +57,27 @@ class Folder {
     }
   }
 
-  static async getAllFolders(userId, path) {
+  static async getAllFolders(userId) {
     try {
       const sql = `SELECT * FROM folders 
-                    WHERE owner = '${userId}' AND path = '${path}'
+                    WHERE owner = '${userId}'
                     ORDER BY dateCreated DESC;`;
       const [data, _] = await db.execute(sql);
       return data;
     } catch (error) {
       console.log(error + "   get all folders   ");
+    }
+  }
+
+  static async moveFolder(userId, folderKey, path) {
+    try {
+      const sql = `UPDATE folders SET ? 
+                  WHERE folderKey = '${folderKey}' AND owner = '${userId}' AND folderKey <> '${path}';`;
+      const updateValues = { path };
+      const [data, _] = await db.query(sql, updateValues);
+      return data;
+    } catch (error) {
+      console.log(error + "   move folder   ");
     }
   }
 

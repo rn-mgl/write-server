@@ -61,6 +61,19 @@ const updateNote = async (req, res) => {
     res.status(StatusCodes.OK).json(note);
 
     return;
+  } else if (type === "path") {
+    const { path, noteKey } = req.body;
+    const { id } = req.user;
+
+    const data = await Note.moveNote(id, noteKey, path);
+
+    if (!data) {
+      throw new BadRequestError(`Error in moving note.`);
+    }
+
+    res.status(StatusCodes.OK).json(data);
+
+    return;
   } else {
     throw new BadRequestError(`This type of update is not allowed.`);
   }

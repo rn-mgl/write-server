@@ -93,12 +93,13 @@ class Note {
 
   static async moveNote(userId, noteKey, path) {
     try {
-      const sql = `UPDATE notes SET ?;`;
-      const updateValues = { userId, noteKey, path };
+      const sql = `UPDATE notes SET ? 
+                  WHERE noteKey = '${noteKey}' AND owner = '${userId}';`;
+      const updateValues = { path };
       const [data, _] = await db.query(sql, updateValues);
       return data;
     } catch (error) {
-      console.log(error + "   get all notes   ");
+      console.log(error + "   move note   ");
     }
   }
 
